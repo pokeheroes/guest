@@ -1,0 +1,49 @@
+
+HIDDEN-FORCED,
+.top-ads-container,
+.top-ads-container *, 
+.global-registration-buttons,
+.global-registration-buttons *,
+.global-navigation,
+.global-navigation *,
+.featured-video-player-container,
+.featured-video-player-container *,
+[id="WikiaBar"],
+.page__right-rail,
+.rcs-container,
+[data-tracking="discussions"],
+[data-tracking="theme-switch-dark"],
+.page-side-tools__wrapper,
+.bottom-ads-container,
+.bottom-ads-container *,
+[id="mixed-content-footer"],
+[id="log-in-edit"],
+.global-footer,
+.global-footer *,
+.ad-slot-placeholder,
+.unified-search__layout__right-rail,
+.license-description,
+.notifications-placeholder,
+.mobile-global-navigation__button-user,
+comment.mobile-global-navigation__user-menu,
+.notifications-box
+{
+   display: none !important;
+   visibility: hidden !important;
+   opacity: 0 !important;
+   max-height: 0px !important;
+   height: 0px !important;
+   transform: scale(0,0) !important;
+   position: absolute !important;
+   z-index: -99 !important;
+}
+
+svg,
+img,
+video,
+iframe
+{
+  border-radius:1vmax;
+  boder-style:none !important;
+  filter:drop-shadow(0 0 0.25rem black);
+}
