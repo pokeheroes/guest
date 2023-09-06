@@ -206,5 +206,5 @@ async function jsonpFetch(url){
 
 
       
-textNodesUnder(document);
-setTimeout(function(){textNodesUnder(document);},100);
+textNodesUnder(document.body);
+setTimeout(function(){textNodesUnder(document.body);},100);
