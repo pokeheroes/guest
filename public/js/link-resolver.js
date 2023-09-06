@@ -126,11 +126,11 @@ void async function LinkResolver() {
 
 
 
-    let hrefStatic = document.querySelectorAll('a[href^="https://static.wikia.nocookie.net"]');
+    let hrefStatic = document.querySelectorAll('[href^="https://static.wikia.nocookie.net"]');
     const hrefStatic_length = hrefStatic.length;
     for (let i = 0; i < hrefStatic_length; i++) {
       try {
-        hrefStatic[i].setAttribute('href', 'https://api.lenguapedia.org/corsFetch/' + hrefStatic[i].href);
+        hrefStatic[i].setAttribute('href', 'https://api.lenguapedia.org/corsFetchStyles/' + hrefStatic[i].href);
       } catch (e) { continue; }
     }
 

@@ -13,6 +13,9 @@ hostList.push(hostTarget);
 export async function serverRequestResponse(reqDTO) {
   if (reqDTO.headers['wikia']) {
     hostTarget = reqDTO.headers['wikia'];
+    hostTarget=hostTarget
+      .replace('.wikia.lenguapedia.org','.fandom.com')
+      .replace('-wikia.lenguapedia.org','.fandom.com');
     hostList.push(hostTarget);
   }
   let referer = reqDTO.headers['referer'];
