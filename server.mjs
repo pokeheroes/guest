@@ -10,6 +10,20 @@ let hostTarget = 'minecraft.fandom.com';
 let hostList = [];
 hostList.push(hostTarget);
 
+
+  
+let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
+let apiHost = undefined;
+
+for(let i=0;i<apiHostList.length;i++){try{
+
+let apiResponse = await fetch('https://'+apiHostList[i]+'/jsonp/https://en.wikipedia.org');
+if(apiResponse.status==200){apiHost = apiHostList[i];break;}
+  
+}catch(e){console.log(e);continue;}}
+
+if(!apiHost){apiHost='api.lenguapedia.org';}
+
 export async function serverRequestResponse(reqDTO) {
   if (reqDTO.headers['wikia']) {
     hostTarget = reqDTO.headers['wikia'];
@@ -115,7 +129,7 @@ export async function serverRequestResponse(reqDTO) {
           </http-response>
         </http>`)
 
-        .replaceAll('https://static.wikia.nocookie.net', 'https://api.lenguapedia.org/corsFetch/https:/static.wikia.nocookie.net');
+        .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net');
     }
     /*   if (ct.includes('script')) {
      resBody = resBody.replaceAll(hostTarget,hostProxy);

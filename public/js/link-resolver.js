@@ -8,6 +8,20 @@ void async function LinkResolver() {
   const hostList_length = hostList.length;
   let hostListQuery = 'hostListQuery';
 
+
+  
+let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
+let apiHost = undefined;
+
+for(let i=0;i<apiHostList.length;i++){try{
+
+let apiResponse = await jsonpFetch('https://'+apiHostList[i]+'/jsonp/https://en.wikipedia.org');
+if(apiResponse){apiHost = apiHostList[i];break;}
+  
+}catch(e){console.log(e);continue;}}
+
+if(!apiHost){apiHost='api.lenguapedia.org';}
+
   setInterval(async function() {
 
     let relativeLinks = document.querySelectorAll('[href^="/"],[href^="./"],[href^="../"]');
@@ -130,7 +144,7 @@ void async function LinkResolver() {
     const hrefStatic_length = hrefStatic.length;
     for (let i = 0; i < hrefStatic_length; i++) {
       try {
-        hrefStatic[i].setAttribute('href', 'https://api.lenguapedia.org/corsFetchStyles/' + hrefStatic[i].href);
+        hrefStatic[i].setAttribute('href', 'https://'+apiHost+'/corsFetchStyles/' + hrefStatic[i].href);
       } catch (e) { continue; }
     }
 
@@ -140,7 +154,7 @@ void async function LinkResolver() {
     const srcStatic_length = srcStatic.length;
     for (let i = 0; i < srcStatic_length; i++) {
       try {
-        srcStatic[i].setAttribute('src', 'https://api.lenguapedia.org/corsFetch/' + srcStatic[i].src);
+        srcStatic[i].setAttribute('src', 'https://'+apiHost+'/corsFetch/' + srcStatic[i].src);
         srcStatic[i].removeAttribute('srcset');
       } catch (e) { continue; }
     }
@@ -151,7 +165,7 @@ void async function LinkResolver() {
     const dsrcStatic_length = dsrcStatic.length;
     for (let i = 0; i < dsrcStatic_length; i++) {
       try {
-        dsrcStatic[i].setAttribute('data-src', 'https://api.lenguapedia.org/corsFetch/' + dsrcStatic[i].getAttribute('data-src'));
+        dsrcStatic[i].setAttribute('data-src', 'https://'+apiHost+'/corsFetch/' + dsrcStatic[i].getAttribute('data-src'));
         dsrcStatic[i].setAttribute('src', dsrcStatic[i].getAttribute('data-src'));
      dsrcStatic[i].removeAttribute('class');
       } catch (e) { continue; }
@@ -163,7 +177,7 @@ void async function LinkResolver() {
     const hrefLink_length = hrefLink.length;
     for (let i = 0; i < hrefLink_length; i++) {
       try {
-        hrefLink[i].setAttribute('href', 'https://api.lenguapedia.org/corsFetch/' + hrefLink[i].href.replace(window.location.host, wikidomain));
+        hrefLink[i].setAttribute('href', 'https://'+apiHost+'/corsFetch/' + hrefLink[i].href.replace(window.location.host, wikidomain));
       } catch (e) { continue; }
     }
   }, 100);
@@ -174,3 +188,30 @@ void async function LinkResolver() {
 
 
 }?.();
+
+
+
+async function jsonpFetch(url){
+  
+  let jsonpid = 'jsonp-id:'+new Date().getTime();
+  let jscr = document.createElement('script');
+  
+  jscr.promise = new Promise(function(resolve,reject){jscr.resolve=resolve;jscr.reject=reject;});
+  jscr.setAttribute('jsonp-id',jsonpid);
+  jscr.onload = function(){
+    let j = document.querySelector('[jsonp-id="'+jsonpid+'"]');
+  
+    j.resolve();
+  };
+  jscr.onerror = function(){
+    let j = document.querySelector('[jsonp-id="'+jsonpid+'"]');
+
+    j.reject();
+  };
+  jscr.src=url;
+  document.firstElementChild.appendChild(jscr);
+  await jscr.promise;
+
+  return jscr.getAttribute('response-body');
+  
+}

@@ -1,5 +1,24 @@
+globalThis.Q = U => { try { return U(); } catch (e) { return undefined; } };
+
+
 checkReferer();
 
+
+
+void async function fandomBlock(){
+
+let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
+let apiHost = undefined;
+
+for(let i=0;i<apiHostList.length;i++){try{
+
+let apiResponse = await jsonpFetch('https://'+apiHostList[i]+'/jsonp/https://en.wikipedia.org');
+if(apiResponse){apiHost = apiHostList[i];break;}
+  
+}catch(e){console.log(e);continue;}}
+
+if(!apiHost){apiHost='api.lenguapedia.org';}
+  
 setInterval(async function() {
 checkReferer();
   let s = document.querySelector('svg.close-icon');
@@ -15,12 +34,12 @@ searchButton.onclick = function() { window.location.href = '/wiki/Special:Search
 searchButton.setAttribute('clickable','true');
 }
 
-let wikia_php=document.querySelector('[href^="https://api.lenguapedia.org/corsFetch/"][href$="wikia.php?controller=ThemeApi&method=themeVariables"]');
+let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][href$="wikia.php?controller=ThemeApi&method=themeVariables"]');
   if(wikia_php){
-    wikia_php.setAttribute('href','https://api.lenguapedia.org/corsFetchStyles/https://minecraft.fandom.com/wikia.php?controller=ThemeApi&method=themeVariables');
+    wikia_php.setAttribute('href','https://'+apiHost+'/corsFetchStyles/https://minecraft.fandom.com/wikia.php?controller=ThemeApi&method=themeVariables');
   }
 
-  let load_php=document.querySelector('[href^="https://api.lenguapedia.org/corsFetch/"][href*="load.php"]');
+  let load_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][href*="load.php"]');
   if(load_php){
 
     load_php.setAttribute('href',load_php.getAttribute('href').replace('corsFetch','corsFetchStyles'));
@@ -38,6 +57,9 @@ removeLinkListeners();
 }, 200);
 
 
+}?.();
+
+  
 
 let searchButton=document.querySelector('.mobile-global-navigation__button-search:not([clickable])');
 
@@ -147,7 +169,7 @@ let styles=document.querySelectorAll('[style*="url(https://static.wikia.nocookie
   const styles_length=styles.length;
   for(let i=0;i<styles_length;i++){
 
-    styles[i].setAttribute('style',styles[i].getAttribute('style').replaceAll('url(https://static.wikia.nocookie.net','url(https://api.lenguapedia.org/corsFetch/https://static.wikia.nocookie.net'))
+    styles[i].setAttribute('style',styles[i].getAttribute('style').replaceAll('url(https://static.wikia.nocookie.net','url(https://'+apiHost+'/corsFetch/https://static.wikia.nocookie.net'))
     
     
   }
@@ -155,6 +177,34 @@ let styles=document.querySelectorAll('[style*="url(https://static.wikia.nocookie
 
   
 }
+
+
+async function jsonpFetch(url){
+  
+  let jsonpid = 'jsonp-id:'+new Date().getTime();
+  let jscr = document.createElement('script');
+  
+  jscr.promise = new Promise(function(resolve,reject){jscr.resolve=resolve;jscr.reject=reject;});
+  jscr.setAttribute('jsonp-id',jsonpid);
+  jscr.onload = function(){
+    let j = document.querySelector('[jsonp-id="'+jsonpid+'"]');
+  
+    j.resolve();
+  };
+  jscr.onerror = function(){
+    let j = document.querySelector('[jsonp-id="'+jsonpid+'"]');
+
+    j.reject();
+  };
+  jscr.src=url;
+  document.firstElementChild.appendChild(jscr);
+  await jscr.promise;
+
+  return jscr.getAttribute('response-body');
+  
+}
+
+
       
 textNodesUnder(document);
 setTimeout(function(){textNodesUnder(document);},100);
