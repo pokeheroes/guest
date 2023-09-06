@@ -32,6 +32,8 @@ export async function serverRequestResponse(reqDTO) {
       .replace('_wikia.lenguapedia.org','.fandom.com')
       .replace('-wikia.lenguapedia.org','.fandom.com');
     hostList.push(hostTarget);
+  }else if(reqDTO.shortURL.includes('wikia=')){
+    hostTarget=reqDTO.shortURL.split('wikia=')[1].split('?')[0].split('#')[0];
   }
   let referer = reqDTO.headers['referer'];
   
