@@ -15,6 +15,7 @@ export async function serverRequestResponse(reqDTO) {
     hostTarget = reqDTO.headers['wikia'];
     hostTarget=hostTarget
       .replace('.wikia.lenguapedia.org','.fandom.com')
+      .replace('_wikia.lenguapedia.org','.fandom.com')
       .replace('-wikia.lenguapedia.org','.fandom.com');
     hostList.push(hostTarget);
   }
