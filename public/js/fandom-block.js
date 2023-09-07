@@ -1,5 +1,5 @@
 globalThis.Q = U => { try { return U(); } catch (e) { return undefined; } };
-
+const the = {};
 
 checkReferer();
 
@@ -66,12 +66,13 @@ removeLinkListeners();
 
   
 
-let searchButton=document.querySelector('.mobile-global-navigation__button-search:not([clickable])');
+the.searchButtonB=document.querySelector('.mobile-global-navigation__button-search:not([clickable])');
 
-if(searchButton){
-searchButton.onclick = function() { window.location.href = '/wiki/Special:Search'; };
-searchButton.setAttribute('clickable','true');
+if(the.searchButtonB){
+the.searchButtonB.onclick = function() { window.location.href = '/wiki/Special:Search'; };
+the.searchButtonB.setAttribute('clickable','true');
 }
+delete the.searchButtonB;
 
   function removeLinkListeners(){
     let searchLinks = document.querySelectorAll('li.top-results__item:not([unlisten])');
