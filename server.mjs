@@ -29,7 +29,7 @@ if(!apiHost){apiHost='api.lenguapedia.org';}
 
 determineApiHost.unawaited = true;
 
-export async function serverRequestResponse(reqDTO) {
+export async function serverRequestResponse(reqDTO) {//try{
   if (reqDTO.headers['wikia']) {
     hostTarget = reqDTO.headers['wikia'];
     hostTarget=hostTarget
@@ -141,7 +141,8 @@ export async function serverRequestResponse(reqDTO) {
           </http-response>
         </http>`)
 
-        .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net');
+        .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net')
+        .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"');
     }
     /*   if (ct.includes('script')) {
      resBody = resBody.replaceAll(hostTarget,hostProxy);
@@ -160,6 +161,6 @@ export async function serverRequestResponse(reqDTO) {
 
   }
 
-
+//}catch(e){console.log(e.message);}
 
 }
