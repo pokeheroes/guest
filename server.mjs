@@ -142,7 +142,8 @@ export async function serverRequestResponse(reqDTO) {//try{
         </http>`)
 
         .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net')
-        .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"').replace('</body>',
+        .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"')
+        .replace('</body>',
         `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script></body>`);
     }
     /*   if (ct.includes('script')) {
