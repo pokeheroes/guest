@@ -133,11 +133,13 @@ console.log(str);
 
 function fixDecode(str){
 let codes = [
+         ['â€‰•â€‰',' • '],
+         ['â€‰',' '],
          ['â€¢','•'],
          ['â€“','–'],
          ['Â&','&'],
          ['â€‹',''],
-         ['Â ',' ']
+         ['Â','']
            ];
   const codes_length=codes.length;
   for(let i=0;i<codes_length;i++){
@@ -206,5 +208,5 @@ async function jsonpFetch(url){
 
 
       
-textNodesUnder(document.body);
+textNodesUnder(document.body||document);
 setTimeout(function(){textNodesUnder(document.body);},100);

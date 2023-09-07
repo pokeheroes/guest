@@ -119,6 +119,7 @@ export async function serverRequestResponse(reqDTO) {
     if (ct.includes('html') || ct.includes('xml') || pat.endsWith('.html') || pat.endsWith('.xhtml')) {
       resBody = resBody.replace('<head>',
         `<head>` +
+        `<script src="/sw.js?`+new Date().getTime()+`"></script>`+
         `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
         `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
         `<script src="https://files-servleteer.vercel.app/fandom/fandom-block.js"></script>` +
