@@ -4,7 +4,8 @@ void async function LinkResolver() {
 
 
   const hostProxy = window.location.host;
-  const hostList = JSON.parse(atob(document.currentScript.getAttribute('host-list')));
+  let LinkResloverScript = document.currentScript||document.querySelector('[host-list]');
+  const hostList = JSON.parse(atob(LinkResloverScript.getAttribute('host-list')));
   const hostList_length = hostList.length;
   let hostListQuery = 'hostListQuery';
 

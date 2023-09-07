@@ -27,11 +27,11 @@ checkReferer();
   //if(s){s.click();}
 
   
-let searchButton=document.querySelector('.mobile-global-navigation__button-search:not([clickable])');
+let searchButtonA=document.querySelector('.mobile-global-navigation__button-search:not([clickable])');
 
-if(searchButton){
-searchButton.onclick = function() { window.location.href = '/wiki/Special:Search'; };
-searchButton.setAttribute('clickable','true');
+if(searchButtonA){
+searchButtonA.onclick = function() { window.location.href = '/wiki/Special:Search'; };
+searchButtonA.setAttribute('clickable','true');
 }
 
 let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][href$="wikia.php?controller=ThemeApi&method=themeVariables"]');

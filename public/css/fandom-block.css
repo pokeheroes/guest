@@ -44,6 +44,11 @@ video,
 iframe
 {
   border-radius:1vmax;
-  boder-style:none !important;
+  border-style:none !important;
   filter:drop-shadow(0 0 0.25rem black);
+}
+
+[class*="gallery"]{
+   border-width:0px !important;
+   overflow:unset !important;
 }
