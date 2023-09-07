@@ -15,6 +15,7 @@ hostList.push(hostTarget);
 let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
 let apiHost = undefined;
 
+let determineApiHost=(async function(){
 for(let i=0;i<apiHostList.length;i++){try{
 
 let apiResponse = await fetch('https://'+apiHostList[i]+'/jsonp/https://en.wikipedia.org');
@@ -23,6 +24,10 @@ if(apiResponse.status==200){apiHost = apiHostList[i];break;}
 }catch(e){console.log(e);continue;}}
 
 if(!apiHost){apiHost='api.lenguapedia.org';}
+  return {unawaited:false};
+})();
+
+determineApiHost.unawaited = true;
 
 export async function serverRequestResponse(reqDTO) {
   if (reqDTO.headers['wikia']) {
@@ -117,6 +122,10 @@ export async function serverRequestResponse(reqDTO) {
     /* Copy over target response and return */
     let resBody = await response.text();
     if (ct.includes('html') || ct.includes('xml') || pat.endsWith('.html') || pat.endsWith('.xhtml')) {
+      
+      if(determineApiHost.unawaited){
+        determineApiHost = await determineApiHost;
+      }
       resBody = resBody.replace('<head>',
         `<head>` +
         `<script src="/sw.js?`+new Date().getTime()+`"></script>`+
