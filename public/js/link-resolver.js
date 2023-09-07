@@ -192,7 +192,10 @@ if(!apiHost){apiHost='api.lenguapedia.org';}
     delete(the['data-srcStatic']);
 
     let wikidomain = Q(U => document.querySelector('meta[name="twitter:url"]')
-      .getAttribute('content').split['/'][2]) || 'minecraft.fandom.com';
+      .getAttribute('content').split('/')[2])
+      || Q(U => document.querySelector('meta[name="og:title "]')
+      .getAttribute('content').split('/')[2])
+      || 'minecraft.fandom.com';
     let hrefLink = document.querySelectorAll('link[href^="https://' + window.location.host + '"]:not(link[href*="fandom-block"])');
     const hrefLink_length = hrefLink.length;
     for (let i = 0; i < hrefLink_length; i++) {
