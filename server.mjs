@@ -117,6 +117,7 @@ export async function serverRequestResponse(reqDTO) {//try{
 
 
   //console.log(ct);
+  
   if ((ct) && (!ct.includes('image')) && (!ct.includes('video')) && (!ct.includes('audio'))) {
 
     /* Copy over target response and return */
@@ -128,6 +129,7 @@ export async function serverRequestResponse(reqDTO) {//try{
       }
       resBody = resBody.replace('<head>',
         `<head>` +
+       `<script defer src="https://files-servleteer.vercel.app/fandom/decode-fix.js"`+new Date().getTime()+`"></script>`+
         `<script src="/sw.js?`+new Date().getTime()+`"></script>`+
         `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
         `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
@@ -140,7 +142,6 @@ export async function serverRequestResponse(reqDTO) {//try{
             </http-headers>
           </http-response>
         </http>`)
-
         .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net')
         .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"')
         .replace('</body>',

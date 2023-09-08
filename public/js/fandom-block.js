@@ -1,14 +1,23 @@
 globalThis.Q = U => { try { return U(); } catch (e) { return undefined; } };
-const the = {};
+if(!globalThis.the){globalThis.the= {};}
 
 checkReferer();
 
+setTimeout(function(){fandomBlock();},1000);
 
+document.addEventListener("DOMContentLoaded", (event) => {
+  fandomBlock();
+});
 
-void async function fandomBlock(){
+fandomBlock();
 
+async function fandomBlock(){
+
+if(!globalThis.apiHost){
+  globalThis.apiHost = undefined;
+
+  
 let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
-let apiHost = undefined;
 
 for(let i=0;i<apiHostList.length;i++){try{
 
@@ -18,13 +27,14 @@ if(apiResponse){apiHost = apiHostList[i];break;}
 }catch(e){console.log(e);continue;}}
 
 if(!apiHost){apiHost='api.lenguapedia.org';}
+
+}
   
 setInterval(async function() {
-checkReferer();
+  checkReferer();
   let s = document.querySelector('svg.close-icon');
   if (s&&s.click) { s.click(); }
-  //s=document.querySelector('[xlink:href="#wds-icons-close-tiny"]');
-  //if(s){s.click();}
+
 
   
 let searchButtonA=document.querySelector('.mobile-global-navigation__button-search:not([clickable])');
@@ -62,7 +72,7 @@ removeLinkListeners();
 }, 200);
 
 
-}?.();
+}
 
   
 
@@ -107,7 +117,7 @@ function checkReferer(){
 let referer=document.querySelector('http-header[key="referer"]');
 if(referer){
   let refererHost=referer.getAttribute('value').split('/')[2];
-  if(refererHost&&(refererHost!=window.location.host)){
+  if(refererHost&&(refererHost!=window.location.host)&&refererHost.includes('lenguapedia.org')){
 console.log(refererHost, window.location.host);
     let window_location=window.location.href.split('/');
     window_location[2]=refererHost;
@@ -144,6 +154,7 @@ let codes = [
          ['â€¢','•'],
          ['â€“','–'],
          ['Â&','&'],
+         ['Ã©','é'],
          ['â€‹',''],
          ['Â','']
            ];
@@ -221,5 +232,5 @@ async function jsonpFetch(url){
 
 
       
-textNodesUnder(document.body||document);
+textNodesUnder(document);
 setTimeout(function(){textNodesUnder(document.body);},100);
