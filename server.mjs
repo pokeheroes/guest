@@ -145,7 +145,9 @@ export async function serverRequestResponse(reqDTO) {//try{
         .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net')
         .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"')
         .replace('</body>',
-        `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script></body>`);
+        `<script defer src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>
+        <script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>
+        </body>`);
     }
     /*   if (ct.includes('script')) {
      resBody = resBody.replaceAll(hostTarget,hostProxy);
