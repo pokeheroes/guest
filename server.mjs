@@ -6,7 +6,7 @@ import fetch from 'node-fetch';
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-let hostTarget = 'minecraft.fandom.com';
+let hostTarget = 'starwars.fandom.com';
 let hostList = [];
 hostList.push(hostTarget);
 
