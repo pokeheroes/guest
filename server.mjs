@@ -111,6 +111,11 @@ export async function serverRequestResponse(reqDTO) {//try{
 
 
 
+resDTO.headers['Cloudflare-CDN-Cache-Control'] = 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
+    resDTO.headers['Vercel-CDN-Cache-Control'] = 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
+    resDTO.headers['CDN-Cache-Control']= 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
+    resDTO.headers['Cache-Control']= 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
+    resDTO.headers['Surrogate-Control']='public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
 
 
   resDTO.headers['content-type'] = ct;
