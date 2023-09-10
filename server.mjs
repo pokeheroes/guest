@@ -12,7 +12,7 @@ hostList.push(hostTarget);
 
 
   
-let apiHostList = ['lenguapedia-api.vercel.app' ,'api.lenguapedia.org' ,'lenguapedia-api.weblet.repl.co'];
+let apiHostList = ['api.lenguapedia.org' ,  'lenguapedia-api.vercel.app' ,'lenguapedia-api.weblet.repl.co'];
 let apiHost = undefined;
 
 let determineApiHost=(async function(){
