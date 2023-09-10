@@ -17,7 +17,7 @@ if(!globalThis.apiHost){
   globalThis.apiHost = undefined;
 
   
-let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
+let apiHostList = ['lenguapedia-api.vercel.app','api.lenguapedia.org','lenguapedia-api.weblet.repl.co'];
 
 for(let i=0;i<apiHostList.length;i++){try{
 
@@ -68,7 +68,7 @@ let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][h
   
 removeLinkListeners();
   oddballLinks();
-  textNodesUnder(document.body);
+//  textNodesUnder(document.body);
 }, 200);
 
 
@@ -232,5 +232,5 @@ async function jsonpFetch(url){
 
 
       
-textNodesUnder(document);
-setTimeout(function(){textNodesUnder(document.body);},100);
+//textNodesUnder(document);
+//setTimeout(function(){textNodesUnder(document.body);},100);

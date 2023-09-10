@@ -12,7 +12,7 @@ hostList.push(hostTarget);
 
 
   
-let apiHostList = ['api.lenguapedia.org','lenguapedia-api.vercel.app','lenguapedia-api.weblet.repl.co'];
+let apiHostList = ['lenguapedia-api.vercel.app' ,'api.lenguapedia.org' ,'lenguapedia-api.weblet.repl.co'];
 let apiHost = undefined;
 
 let determineApiHost=(async function(){
@@ -23,7 +23,7 @@ if(apiResponse.status==200){apiHost = apiHostList[i];break;}
   
 }catch(e){console.log(e);continue;}}
 
-if(!apiHost){apiHost='api.lenguapedia.org';}
+if(!apiHost){apiHost='lenguapedia-api.vercel.app';}
   return {unawaited:false};
 })();
 
