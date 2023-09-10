@@ -1,5 +1,10 @@
-let fixingDecode=false;
-let decodeCount=0;
+if(!globalThis.fixingDecode){
+  globalThis.fixingDecode=false;
+}
+if(!globalThis.decodeCount){
+  globalThis.decodeCount=0;
+}
+
 async function setTextContent(n,text){
 
    n.textContent=text;
@@ -27,24 +32,29 @@ return out;
   
 }
 
+
+
+
+
 async function fixDecode(str){
 if(!globalThis.decodeTable){
 globalThis.decodeTable=[];
 
 
-for(let i=0;i<4096;i++){
-let char =String.fromCharCode(i);
+for(let i=0;i<4096;i++){try{
+let char = String.fromCharCode(i);
 const encoder = new TextEncoder();
 const view = encoder.encode(char);
 decodeTable.push([String.fromCharCode(...view),char]);
-}
+}catch(e){continue;}}
 let codes = [
-  ['Â† ','←'],
-  ['Â†’','→'],
- ['â€œ','“'],
-  ['â€ ','” '],
-  ['â€','”'],
-['â€™',  '’'],
+         ['â€¦','…'],
+         ['Â† ','←'],
+         ['Â†’','→'],
+         ['â€œ','“'],
+         ['â€ ','” '],
+         ['â€','”'],
+         ['â€™', '’'],
          ['â€‰•â€‰',' • '],
          ['â€‰',' '],
          ['â€¢','•'],
@@ -64,9 +74,9 @@ let codes = [
   
 
   const decodeTable_length=decodeTable.length;
-  for(let i=0;i<decodeTable_length;i++){
+  for(let i=0;i<decodeTable_length;i++){try{
     str=str.replaceAll(decodeTable[i][0],decodeTable[i][1]);
-  }
+  }catch(e){continue}}
 
 return str;
   
@@ -77,13 +87,13 @@ async function textNodesUnder(el){
   if(decodeCount>10){return;}
   decodeCount++;
   fixingDecode=true;
-  var n, a=[], walk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false);
+  var n, walk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false);
   while(n=walk.nextNode()){ 
-  a.push(n);
+  
     let ntext=n.textContent;
   
   ntext=await fixDecode(ntext);
-//ntext=await recode(ntext);
+
     
   if(ntext!=n.textContent){
    await setTextContent(n,ntext);
@@ -91,7 +101,7 @@ async function textNodesUnder(el){
     
   };
   fixingDecode=false;
-  return a;
+  return ;
 }
 setInterval(async function(){
   await textNodesUnder(document.firstElementChild);
