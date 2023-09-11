@@ -52,3 +52,8 @@ iframe
    border-width:0px !important;
    overflow:unset !important;
 }
+
+
+.search-modal__content{
+  visibility:hidden !important;
+}

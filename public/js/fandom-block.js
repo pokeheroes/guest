@@ -250,7 +250,7 @@ async function jsonpFetch(url){
 
 function removeUnwantedScripts(){
 
-let scripts = document.querySelectorAll('[src*="sdk-cross-domain"],[src*="consoleLoggerFactory"],[src*="silver-surfer"],[src*="services.fandom"]');
+let scripts = document.querySelectorAll('[src*="sdk-cross-domain"],[src*="consoleLoggerFactory"],[src*="silver-surfer"],[src*="services.fandom"],[src*="twitter.com"]');
 const scripts_length=scripts.length;
   for(let i=0;i<scripts_length;i++){
     scripts[i].remove();

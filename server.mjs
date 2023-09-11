@@ -124,9 +124,11 @@ if(ct){
   if(ct===null){
     resDTO.headers['content-type'] = 'text/html; charset=utf-8';
   }
-
-  console.log(ct);
-
+ 
+delete(resDTO.headers['X-Content-Type-Options']);
+  delete(resDTO.headers['x-content-type-options']);
+  delete(resDTO.headers['content-security-policy']);
+  delete(resDTO.headers['content-security-policy-report-only']);
 
   
   if ((ct) && (!ct.includes('image')) && (!ct.includes('video')) && (!ct.includes('audio'))) {
@@ -138,7 +140,7 @@ if(ct){
       if(determineApiHost.unawaited){
         determineApiHost = await determineApiHost;
       }
-      resBody = resBody.replace('<head>',
+      resBody = resBody.replace('nosniff','').replace('<head>',
         `<head>` +
         `<script src="/sw.js?`+new Date().getTime()+`"></script>`+
         `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
@@ -163,18 +165,13 @@ if(ct){
      resBody = resBody.replaceAll(hostTarget,hostProxy);
     
    }*/
-    if(!ct)
+  
     resDTO.body = resBody;
     return resDTO;
 
 
   } else {
-if(!ct){
-  let bodyText = await response.clone().text();
-  if(bodyText.toLowerCase().includes('</html>')){
-     resDTO.headers['content-type'] = 'text/html; charset=utf-8';
-  }
-}
+
     let resBody = Buffer.from(await response.arrayBuffer());
     resDTO.body = resBody;
     return resDTO;

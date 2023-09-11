@@ -90,6 +90,18 @@ void async function decodeWithoutWorkers() {
     globalThis.incrementDecode = 1000;
   }
   async function fixDecode(str) {
+    globalThis.decodeTableRotate = [];
+
+    for (let i = startDecode; i < (startDecode + incrementDecode); i++) {
+        try {
+          let char = String.fromCharCode(i);
+          const encoder = new TextEncoder();
+          const view = encoder.encode(char);
+          decodeTableRotate.push([String.fromCharCode(...view), char]);
+        } catch (e) {
+          continue;
+        }
+      }
     if (!globalThis.decodeTable) {
       globalThis.decodeTable = [];
 
@@ -160,7 +172,17 @@ void async function decodeWithoutWorkers() {
         continue
       }
     }
-    //startDecode += incrementDecode;
+ const decodeTableRotate_length = decodeTableRotate.length;
+    for (let i = 0; i < decodeTableRotate_length; i++) {
+      try {
+        if (str.includes(decodeTableRotate[i][0])) {
+          str = str.replaceAll(decodeTableRotate[i][0], decodeTableRotate[i][1]);
+        }
+      } catch (e) {
+        continue
+      }
+    }
+    startDecode += incrementDecode;
     return str;
 
   }
