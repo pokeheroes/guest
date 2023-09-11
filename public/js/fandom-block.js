@@ -68,6 +68,7 @@ let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][h
   
 removeLinkListeners();
   oddballLinks();
+  removeUnwantedScripts();
 //  textNodesUnder(document.body);
 }, 200);
 
@@ -230,7 +231,16 @@ async function jsonpFetch(url){
   
 }
 
+function removeUnwantedScripts(){
 
+let scripts = document.querySelectorAll('[src*="sdk-cross-domain"],[src*="consoleLoggerFactory"],[src*="silver-surfer"],[src*="services.fandom"]');
+const scripts_length=scripts.length;
+  for(let i=0;i<scripts_length;i++){
+    scripts[i].remove();
+  }
+
+  
+}
       
 //textNodesUnder(document);
 //setTimeout(function(){textNodesUnder(document.body);},100);

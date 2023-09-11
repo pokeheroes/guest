@@ -33,6 +33,7 @@ export async function serverRequestResponse(reqDTO) {//try{
   if (reqDTO.headers['wikia']) {
     hostTarget = reqDTO.headers['wikia'];
     hostTarget=hostTarget
+      .replace('wika.lenguapedia.org','wikia.lenguapedia.org')
       .replace('.wikia.lenguapedia.org','.fandom.com')
       .replace('_wikia.lenguapedia.org','.fandom.com')
       .replace('-wikia.lenguapedia.org','.fandom.com');
@@ -134,7 +135,6 @@ resDTO.headers['Cloudflare-CDN-Cache-Control'] = 'public, max-age=96400, s-max-a
       }
       resBody = resBody.replace('<head>',
         `<head>` +
-       `<script defer src="https://files-servleteer.vercel.app/fandom/decode-fix.js"`+new Date().getTime()+`"></script>`+
         `<script src="/sw.js?`+new Date().getTime()+`"></script>`+
         `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
         `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
