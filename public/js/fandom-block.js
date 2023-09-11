@@ -32,6 +32,14 @@ if(!apiHost){apiHost='api.lenguapedia.org';}
   
 setInterval(async function() {
   checkReferer();
+
+  if(document.querySelector('.search-modal__content')
+     &&(!window.location.href.includes('Special:Search'))
+    &&(!globalThis.redirecting)){
+    globalThis.redirecting=true;
+    window.location.href='https://'+window.location.host+'/wiki/Special:Search';
+    
+  }
   let s = document.querySelector('svg.close-icon');
   if (s&&s.click) { s.click(); }
 
@@ -118,7 +126,16 @@ function checkReferer(){
 let referer=document.querySelector('http-header[key="referer"]');
 if(referer){
   let refererHost=referer.getAttribute('value').split('/')[2];
-  if(refererHost&&(refererHost!=window.location.host)&&refererHost.includes('lenguapedia.org')){
+  if(refererHost
+     &&(refererHost
+        .replace('-','')
+        .replace('_','')
+        .replace('.','')
+        !=window.location.host
+        .replace('-','')
+        .replace('_','')
+        .replace('.',''))
+     &&refererHost.includes('lenguapedia.org')){
 console.log(refererHost, window.location.host);
     let window_location=window.location.href.split('/');
     window_location[2]=refererHost;

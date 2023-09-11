@@ -118,11 +118,16 @@ resDTO.headers['Cloudflare-CDN-Cache-Control'] = 'public, max-age=96400, s-max-a
     resDTO.headers['Cache-Control']= 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
     resDTO.headers['Surrogate-Control']='public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
 
+if(ct){
+  resDTO.headers['content-type'] = ct.replace('UTF-8','utf-8');
+}
+  if(ct===null){
+    resDTO.headers['content-type'] = 'text/html; charset=utf-8';
+  }
 
-  resDTO.headers['content-type'] = ct;
+  console.log(ct);
 
 
-  //console.log(ct);
   
   if ((ct) && (!ct.includes('image')) && (!ct.includes('video')) && (!ct.includes('audio'))) {
 
