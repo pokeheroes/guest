@@ -163,13 +163,18 @@ if(ct){
      resBody = resBody.replaceAll(hostTarget,hostProxy);
     
    }*/
-
+    if(!ct)
     resDTO.body = resBody;
     return resDTO;
 
 
   } else {
-
+if(!ct){
+  let bodyText = await response.clone().text();
+  if(bodyText.toLowerCase().includes('</html>')){
+     resDTO.headers['content-type'] = 'text/html; charset=utf-8';
+  }
+}
     let resBody = Buffer.from(await response.arrayBuffer());
     resDTO.body = resBody;
     return resDTO;
