@@ -134,7 +134,7 @@ if(ct){
     /* Copy over target response and return */
     let resBody = await response.text();
     if (ct.includes('html') || ct.includes('xml') || pat.endsWith('.html') || pat.endsWith('.xhtml')) {
-      
+     // resDTO.headers['Content-Language']='en';
       if(determineApiHost.unawaited){
         determineApiHost = await determineApiHost;
       }
