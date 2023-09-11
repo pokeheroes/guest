@@ -66,6 +66,10 @@ export async function serverRequestResponse(reqDTO) {//try{
 
   }
 
+  
+    
+  
+
   reqDTO.host = hostTarget;
   reqDTO.headers.host = hostTarget;
   reqDTO.headers.referer = hostTarget;
@@ -167,6 +171,39 @@ delete(resDTO.headers['X-Content-Type-Options']);
    }*/
   
     resDTO.body = resBody;
+      if(pat=='/asdf.html'){resDTO.body=`<!DOCTYPE html>
+<html lang="uk">
+<body>
+
+<h1>The script element</h1>
+
+<p id="demo"></p>
+Ð<br><b>ÐŸ</b>
+Падме Амідала
+
+<script>
+
+
+function uncode(str) {
+    const encoder = new TextEncoder();
+    const view = encoder.encode(str);
+    let wrong = String.fromCharCode(...view);
+	let test = wrong.split('');
+	test[1]=test[1].replace('\\x','');
+	console.log(wrong);
+	let wronger=wrong.split('').map(x=>x.replace('\\x',''));
+	console.log(wronger);
+	document.getElementById("demo").textContent=wrong+'<br>'+'<b>ÐŸ</b>';
+	return wronger;
+  }
+uncode('П');
+
+</script> 
+
+</body>
+</html>
+`;resDTO.headers['content-type']='text/html; charset=utf-8';
+                           }
     return resDTO;
 
 
