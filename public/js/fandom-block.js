@@ -75,7 +75,7 @@ let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][h
 
   
 removeLinkListeners();
-  oddballLinks();
+ // oddballLinks();
   removeUnwantedScripts();
 //  textNodesUnder(document.body);
 }, 200);

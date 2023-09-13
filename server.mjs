@@ -3,9 +3,15 @@ import { normalizeRequest, mapResDTO, applyResponse } from './modules/http-fetch
 import { addCorsHeaders } from './modules/cors-headers.mjs';
 import fetch from 'node-fetch';
 
+async function fetchText(url){
+  let res = await fetch(url);
+  return res.text();
+}
+
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 let hostTarget = 'starwars.fandom.com';
 let hostList = [];
 hostList.push(hostTarget);
@@ -14,7 +20,8 @@ hostList.push(hostTarget);
   
 let apiHostList = ['api.lenguapedia.org' ,  'lenguapedia-api.vercel.app' ,'lenguapedia-api.weblet.repl.co'];
 let apiHost = undefined;
-
+//let chars = fetchText('https://files-servleteer.vercel.app/fandom/chars.html');
+//chars.unawaited = true;
 let determineApiHost=(async function(){
 for(let i=0;i<apiHostList.length;i++){try{
 
@@ -65,11 +72,11 @@ export async function serverRequestResponse(reqDTO) {//try{
     return fileFromRequest('/public/css/' + pat);
 
   }
-  if (pat == '/fandom/chars.html') {
 
-    hostTarget = 'files-servleteer.vercel.app';
 
-  }
+  
+
+
 
   
     
@@ -127,33 +134,49 @@ resDTO.headers['Cloudflare-CDN-Cache-Control'] = 'public, max-age=96400, s-max-a
     resDTO.headers['Cache-Control']= 'public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
     resDTO.headers['Surrogate-Control']='public, max-age=96400, s-max-age=96400, stale-if-error=31535000, stale-while-revalidate=31535000';
 
+  let charset='utf-8';
 if(ct){
-  resDTO.headers['content-type'] = ct.replace('UTF-8','utf-8');
+  resDTO.headers['content-type'] = ct.toLowerCase().replace('utf-8',charset);
+  resDTO.headers['x-content-type']=resDTO.headers['content-type'];
 }
   if(ct===null){
-    resDTO.headers['content-type'] = 'text/html; charset=utf-8';
+    resDTO.headers['content-type'] = 'text/html; charset='+charset;
   }
  
 delete(resDTO.headers['X-Content-Type-Options']);
   delete(resDTO.headers['x-content-type-options']);
   delete(resDTO.headers['content-security-policy']);
   delete(resDTO.headers['content-security-policy-report-only']);
-
   
+
   if ((ct) && (!ct.includes('image')) && (!ct.includes('video')) && (!ct.includes('audio'))) {
 
     /* Copy over target response and return */
-    let resBody = await response.text();
+    let charsetDecoder = '';
+      try{
+       charsetDecoder = new TextDecoder(charset);
+      }catch(e){
+        console.log('charset error for '+charset);
+       charsetDecoder = new TextDecoder();
+      }
+      /* Copy over target response and return */
+      let resBuffer = await response.arrayBuffer();
+      let resBody = charsetDecoder.decode(resBuffer);
+    resBody.replace(/charset="[^"]*"/gi,'charset="'+charset+'"');
     if (ct.includes('html') || ct.includes('xml') || pat.endsWith('.html') || pat.endsWith('.xhtml')) {
      // resDTO.headers['Content-Language']='en';
       if(determineApiHost.unawaited){
         determineApiHost = await determineApiHost;
       }
+    //  if(chars.unawaited){
+    //    chars = await chars;
+    //  }
       resBody = resBody.replace('nosniff','').replace('<head>',
         `<head>` +
-        `<script src="/sw.js?`+new Date().getTime()+`"></script>`+
-        `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
-        `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
+
+        //`<script src="/sw.js?`+new Date().getTime()+`"></script>`+
+      //  `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
+       // `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
         `<script src="https://files-servleteer.vercel.app/fandom/fandom-block.js"></script>` +
         `<link rel="stylesheet" href="https://files-servleteer.vercel.app/fandom/fandom-block.css"></link>`+
         `<http>
@@ -166,9 +189,10 @@ delete(resDTO.headers['X-Content-Type-Options']);
         .replaceAll('https://static.wikia.nocookie.net', 'https://'+apiHost+'/corsFetch/https:/static.wikia.nocookie.net')
         .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"')
         .replace('</body>',
-        `<script defer src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>
-        <script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>
-        </body>`);
+        `<script defer src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>`+
+        `<script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>` +
+       // chars +
+        `</body>`);
     }
     /*   if (ct.includes('script')) {
      resBody = resBody.replaceAll(hostTarget,hostProxy);
@@ -191,3 +215,4 @@ delete(resDTO.headers['X-Content-Type-Options']);
 //}catch(e){console.log(e.message);}
 
 }
+
