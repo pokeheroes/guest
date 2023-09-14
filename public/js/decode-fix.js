@@ -1,4 +1,4 @@
-globalThis.test='async';
+globalThis.test='false';
 console.lag=async function(){
   return console.log(...arguments);
 }

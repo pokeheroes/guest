@@ -141,6 +141,7 @@ if(ct){
 }
   if(ct===null){
     resDTO.headers['content-type'] = 'text/html; charset='+charset;
+    resDTO.headers['x-content-type']=resDTO.headers['content-type'];
   }
  
 delete(resDTO.headers['X-Content-Type-Options']);
