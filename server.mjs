@@ -205,7 +205,7 @@ delete(resDTO.headers['X-Content-Type-Options']);
         .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"')
         .replace('</body>',
         `<script defer src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>`+
-     //   `<script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>` +
+        `<script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>` +
        // chars +
         `</body>`);
     }
