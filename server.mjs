@@ -187,6 +187,8 @@ delete(resDTO.headers['X-Content-Type-Options']);
       resBody = resBody.replace('nosniff','').replace('<head>',
         `<head>` +
         preloadCSS +
+         `<link href="https://api.lenguapedia.org/corsFetchStyles/https://`+hostTarget+`/wikia.php?controller=ThemeApi&method=themeVariables" rel="stylesheet">`    +
+        `<link rel="stylesheet" href="https://api.lenguapedia.org/corsFetchStyles/https://`+hostTarget+`/load.php?lang=en&modules=site.styles&only=styles&skin=fandomdesktop">`+
         `<script src="/sw.js?`+after+`"></script>`+
       //  `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
        // `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
