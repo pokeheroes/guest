@@ -73,7 +73,13 @@ let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][h
     form_action.setAttribute('action',form_action.getAttribute('action').replace('.fandom.com','-wikia.lenguapedia.org'));
   }
 
-  
+let dataImages = document.querySelectorAll('a.image>img[src^="data"]');
+const dataImages_length=dataImages.length;
+for(let i=0;i<dataImages_length;i++){
+    dataImages[i].src=dataImages[i].parentElement.href;
+}
+
+      
 removeLinkListeners();
  // oddballLinks();
   removeUnwantedScripts();
