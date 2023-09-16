@@ -11,7 +11,7 @@ async function fetchText(url){
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
-
+let after='';//new Date().getTime();
 let hostTarget = 'starwars.fandom.com';
 let hostList = [];
 hostList.push(hostTarget);
@@ -72,7 +72,13 @@ export async function serverRequestResponse(reqDTO) {//try{
     return fileFromRequest('/public/css/' + pat);
 
   }
-
+if(pat=='/sw.js'){
+let swResponse = await fetch('https://filers.lenguapedia.org/sw.js');
+  resDTO.body = await swResponse.text();
+  resDTO.headers['content-type'] ='text/javascript; charset=utf-8';
+  resDTO.headers['x-content-type']=resDTO.headers['content-type'];
+  return resDTO;
+}
 
   
 
@@ -175,7 +181,7 @@ delete(resDTO.headers['X-Content-Type-Options']);
       resBody = resBody.replace('nosniff','').replace('<head>',
         `<head>` +
 
-        //`<script src="/sw.js?`+new Date().getTime()+`"></script>`+
+        `<script src="/sw.js?`+after+`"></script>`+
       //  `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
        // `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
         `<script src="https://files-servleteer.vercel.app/fandom/fandom-block.js"></script>` +
