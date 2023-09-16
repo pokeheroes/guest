@@ -1,5 +1,5 @@
 import { addCorsHeaders } from './cors-headers.mjs';
-import {availReq,availRes} from './availability.mjs';
+import { availReq, availRes } from './availability.mjs';
 
 export async function normalizeRequest(req) {
 
@@ -98,7 +98,7 @@ export function mapResDTOHeaders(resDTO, response) {
   for (let [key, value] of response.headers.entries()) {
     key = key.toLowerCase();
     if (!key.includes('content-encoding') || !key.includes('content-length')) { resDTO.headers[key] = value; }
-    if (key.includes('content-type')) {
+    if (key.startsWith('content-type')) {
       resDTO.contentType = value;
     }
   }
@@ -106,7 +106,7 @@ export function mapResDTOHeaders(resDTO, response) {
     key = key.toLowerCase();
     if (key.length > 1) {
       if (!key.includes('content-encoding') || !key.includes('content-length')) { resDTO.headers[key] = value; }
-      if (key.includes('content-type')) {
+      if (key.startsWith('content-type')) {
         resDTO.contentType = value;
       }
     }

@@ -3,6 +3,9 @@ import { normalizeRequest, mapResDTO, applyResponse } from './modules/http-fetch
 import { addCorsHeaders } from './modules/cors-headers.mjs';
 import fetch from 'node-fetch';
 
+let preloadCSSImport = import('./modules/preload-css.js');
+preloadCSSImport.unawaited = true;
+
 async function fetchText(url){
   let res = await fetch(url);
   return res.text();
@@ -128,7 +131,7 @@ let swResponse = await fetch('https://filers.lenguapedia.org/sw.js');
     response = await fetch(response.headers.get('location'));
   }
 
-
+//console.log(response);
 
   resDTO = mapResDTO(resDTO, response);
 
@@ -155,7 +158,7 @@ delete(resDTO.headers['X-Content-Type-Options']);
   delete(resDTO.headers['content-security-policy']);
   delete(resDTO.headers['content-security-policy-report-only']);
   
-
+//console.log(resDTO.headers);
   if ((ct) && (!ct.includes('image')) && (!ct.includes('video')) && (!ct.includes('audio'))) {
 
     /* Copy over target response and return */
@@ -175,12 +178,15 @@ delete(resDTO.headers['X-Content-Type-Options']);
       if(determineApiHost.unawaited){
         determineApiHost = await determineApiHost;
       }
+      if(preloadCSSImport.unawaited){
+        preloadCSSImport = await preloadCSSImport;
+      }
     //  if(chars.unawaited){
     //    chars = await chars;
     //  }
       resBody = resBody.replace('nosniff','').replace('<head>',
         `<head>` +
-
+        preloadCSS +
         `<script src="/sw.js?`+after+`"></script>`+
       //  `<script src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>` +
        // `<script src="https://files-servleteer.vercel.app/link-resolver-full.js"` + new Date().getTime() + `></script>` +
@@ -197,7 +203,7 @@ delete(resDTO.headers['X-Content-Type-Options']);
         .replace(/src="https:\/\/services.fandom[^"]*"/gi,'type="dev/null"')
         .replace('</body>',
         `<script defer src="https://files-servleteer.vercel.app/fandom/link-resolver.js" host-list=` + btoa(JSON.stringify(hostList)) + `></script>`+
-        `<script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>` +
+     //   `<script src="https://files-servleteer.vercel.app/fandom/decode-fix.js" defer></script>` +
        // chars +
         `</body>`);
     }
