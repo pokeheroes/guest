@@ -184,7 +184,7 @@ delete(resDTO.headers['X-Content-Type-Options']);
     //  if(chars.unawaited){
     //    chars = await chars;
     //  }
-      resBody = resBody.replace('nosniff','').replaceAll('loading="lazy"','').replace('<head>',
+      resBody = resBody.replace('nosniff','').replaceAll('class="thumbimage lazyload"','class="thumbimage"').replace('<head>',
         `<head>` +
         preloadCSS +
          `<link href="https://api.lenguapedia.org/corsFetchStyles/https://`+hostTarget+`/wikia.php?controller=ThemeApi&method=themeVariables" rel="stylesheet">`    +
