@@ -17,7 +17,8 @@ maintain(server);
 
 async function onRequest(req, res) {
  res=availRes(res);
- const cacheKey=req.url+JSON.stringify(req.headers);
+ const cacheKey=serverlessCache.generateCacheKey(req);
+  //console.log(cacheKey);
  const cacheVal=serverlessCache.match(cacheKey);
 if(cacheVal){return await applyResponse(res,cacheVal);}
 
@@ -29,3 +30,4 @@ if(cacheVal){return await applyResponse(res,cacheVal);}
   return await applyResponse(res,resDTO);
 
 }
+
