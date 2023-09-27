@@ -57,3 +57,9 @@ iframe
 .search-modal__content{
   visibility:hidden !important;
 }
+
+
+img[error][load-src]{
+  visibility:hidden !important;
+}
+

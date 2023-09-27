@@ -1,3 +1,7 @@
+if(!localStorage.getItem('firstTime')){
+  localStorage.setItem('firstTime','nope');
+  window.location.href=window.location.href;
+}
 globalThis.Q = U => { try { return U(); } catch (e) { return undefined; } };
 if(!globalThis.the){globalThis.the= {};}
 
@@ -73,13 +77,71 @@ let wikia_php=document.querySelector('[href^="https://'+apiHost+'/corsFetch/"][h
     form_action.setAttribute('action',form_action.getAttribute('action').replace('.fandom.com','-wikia.lenguapedia.org'));
   }
 
-let dataImages = document.querySelectorAll('a.image>img[src^="data"]');
-const dataImages_length=dataImages.length;
+try{
+
+let lazyImages=document.querySelectorAll(`[class*="lazyload"]:not([error])`);
+let lazyImages_length=lazyImages.length;
+  for(let i=0;i<lazyImages_length;i++){
+  if(lazyImages[i].getAttribute('error')){
+    continue;
+  }
+    lazyImages[i].setAttribute('class',lazyImages[i].getAttribute('class')
+                               .replaceAll('lazyload',''));
+  }
+  
+let dataImages = document.querySelectorAll('a.image[href*="."]>img[src^="data"]:not([error])');
+let dataImages_length=dataImages.length;
 for(let i=0;i<dataImages_length;i++){
+  let osrc=dataImages[i].src;
+  if(dataImages[i].getAttribute('error')){
+    continue;
+  }
+  dataImages[i].onerror=function(){
+    if(this.getAttribute('error')){
+     this.setAttribute('load-src',this.src);
+      return;
+    }
+    this.setAttribute('error',this.src);
+    this.src=osrc;
+    this.setAttribute('class',this.getAttribute('class')+' lazyload');
+  }
+    dataImages[i].onload=function(){
+    
+  }
     dataImages[i].src=dataImages[i].parentElement.href;
 }
 
-      
+dataImages = document.querySelectorAll('img.mobile-gallery__placeholder[src^="data"][data-src]:not([error]),img.article-media-placeholder[src^="data"][data-src]:not([error])');
+dataImages_length=dataImages.length;
+for(let i=0;i<dataImages_length;i++){
+    if(dataImages[i].getAttribute('error')){
+    continue;
+  }
+  let osrc=dataImages[i].src;
+  dataImages[i].onerror=function(){
+    if(this.getAttribute('error')){
+      this.setAttribute('load-src',this.src);
+      return;
+    }
+    this.setAttribute('error',this.src);
+    this.src=osrc;
+  }
+  dataImages[i].onload=function(){
+    
+  }
+    dataImages[i].src=dataImages[i].getAttribute('data-src');
+}
+
+lazyImages=document.querySelectorAll(`[class*="lazyload"]:not([error])`);
+lazyImages_length=lazyImages.length;
+  for(let i=0;i<lazyImages_length;i++){
+      if(lazyImages[i].getAttribute('error')){
+    continue;
+  }
+    lazyImages[i].setAttribute('class',lazyImages[i].getAttribute('class')
+                               .replaceAll('lazyload',''));
+  }
+}catch(e){console.log(e.message);}  
 removeLinkListeners();
  // oddballLinks();
   removeUnwantedScripts();
