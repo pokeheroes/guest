@@ -18,7 +18,6 @@ maintain(server);
 async function onRequest(req, res) {
  res=availRes(res);
  const cacheKey=serverlessCache.generateCacheKey(req);
-  //console.log(cacheKey);
  const cacheVal=serverlessCache.match(cacheKey);
 if(cacheVal){return await applyResponse(res,cacheVal);}
 
@@ -26,7 +25,9 @@ if(cacheVal){return await applyResponse(res,cacheVal);}
  let reqDTO = await normalizeRequest(req);
 
  let resDTO = await serverRequestResponse(reqDTO);
+  if((!resDTO.status)||((resDTO.status>199)&&(resDTO.status<300))){
   serverlessCache.put(cacheKey,resDTO);
+  }
   return await applyResponse(res,resDTO);
 
 }
