@@ -5,6 +5,7 @@ import {normalizeRequest,mapResHeaders,applyResponse} from './modules/http-fetch
 import maintain from './modules/auto-maintain.mjs';
 import {availReq,availRes} from './modules/availability.mjs';
 import {serverRequestResponse} from './server.mjs';
+import './modules/serverlessCache.mjs';
 
 
 
@@ -16,8 +17,15 @@ maintain(server);
 
 async function onRequest(req, res) {
  res=availRes(res);
+ const cacheKey=req.url+JSON.stringify(req.headers);
+ const cacheVal=serverlessCache.match(cacheKey);
+if(cacheVal){return await applyResponse(res,cacheVal);}
+
+  
  let reqDTO = await normalizeRequest(req);
+
  let resDTO = await serverRequestResponse(reqDTO);
+  serverlessCache.put(cacheKey,resDTO);
   return await applyResponse(res,resDTO);
 
 }
