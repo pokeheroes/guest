@@ -223,7 +223,12 @@ delete(resDTO.headers['X-Content-Type-Options']);
 
   } else {
 
-    let resBody = Buffer.from(await response.arrayBuffer());
+     let resBody ;
+      if(response.fullBody){
+         resBody = Buffer.from(response.fullBody);
+      }else{
+     resBody = Buffer.from(await(response).arrayBuffer());
+      }
     resDTO.body = resBody;
     return resDTO;
 
