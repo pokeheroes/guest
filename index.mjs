@@ -24,7 +24,7 @@ import {serverRequestResponse} from './server.mjs';
 import './modules/serverlessCache.mjs';
 
 
-
+process.on('uncaughtException',e=>console.log(e));
 
 let server = http.createServer(availReq(onRequest));
 
@@ -32,6 +32,7 @@ server.listen(3000);
 maintain(server);
 
 async function onRequest(req, res) {
+  lazyTimeout(res,5000);
  res=availRes(res);
 // const cacheKey=serverlessCache.generateCacheKey(req);
 // const cacheVal=serverlessCache.match(cacheKey);
@@ -48,3 +49,12 @@ async function onRequest(req, res) {
 
 }
 
+function lazyTimeout(res,ms){
+  try{
+   setTimeout(()=>{
+     try{
+      return res.end('');
+     }catch(e){console.log(e);}     
+   },ms);
+  }catch(e){console.log(e);}
+}
