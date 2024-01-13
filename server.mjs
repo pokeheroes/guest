@@ -1,7 +1,7 @@
 import { fileFromRequest } from './static-files.mjs';
 import { normalizeRequest, mapResDTO, applyResponse } from './modules/http-fetch.mjs';
 import { addCorsHeaders } from './modules/cors-headers.mjs';
-import fetch from 'node-fetch';
+//import fetch from 'node-fetch';
 
 let preloadCSSImport = import('./modules/preload-css.js');
 preloadCSSImport.unawaited = true;
