@@ -53,6 +53,7 @@ function lazyTimeout(res,ms){
   try{
    setTimeout(()=>{
      try{
+      res.statusCode=504;
       return res.end('');
      }catch(e){console.log(e);}     
    },ms);
