@@ -281,7 +281,8 @@ let styles=document.querySelectorAll('[style*="url(https://static.wikia.nocookie
     if(original.includes('?')){
       char='&';
     }
-    styles[i].setAttribute('style',rewrite+char+'host='+window.location.host);
+    styles[i].setAttribute('style',(rewrite+char+'host='+window.location.host)
+                           .replace(/cb=[0-9]+/,'?'));
     
     
   }
