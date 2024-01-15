@@ -350,5 +350,6 @@ async function cb(){
   }
 }
 cb();
-setTimeout(()=>window.stop(),10000)
-setInterval(cb,5000);
+setTimeout(cb,300);
+setTimeout(()=>window.stop(),5900)
+setInterval(cb,3000);
