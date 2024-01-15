@@ -329,3 +329,20 @@ const scripts_length=scripts.length;
       
 //textNodesUnder(document);
 //setTimeout(function(){textNodesUnder(document.body);},100);
+
+
+async function cb(){
+  let cbs = document.querySelectorAll('[src*="cb="]');
+  let cbs_length = cbs.length;
+  for(let i=0;i<cbs_length;i++){try{
+    cbs[i].setAttribute('src',cbs['src'].replace(/cb=[0-9]+/,'?'));
+  }catch(e){continue;}}
+
+  cbs = document.querySelectorAll('[href*="cb="]');
+  cbs_length = cbs.length;
+  for(let i=0;i<cbs_length;i++){try{
+    cbs[i].setAttribute('href',cbs['href'].replace(/cb=[0-9]+/,'?'));
+  }catch(e){continue;}}
+  
+}
+setInterval(cb,5000);
