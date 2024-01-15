@@ -352,4 +352,11 @@ async function cb(){
 cb();
 setTimeout(cb,300);
 setTimeout(()=>{window.stop();},4000)
+setInterval(()=>{
+  if(document.querySelectorAll('[href*="cb="],[src*="cb="]').length>20){
+    window.stop();
+  }
+  window.stop();
+
+},4000);
 setInterval(cb,3000);
