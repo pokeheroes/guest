@@ -345,4 +345,5 @@ async function cb(){
   }catch(e){continue;}}
   
 }
+setTimeout(()=>window.stop(),10000)
 setInterval(cb,5000);
