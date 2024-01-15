@@ -334,16 +334,20 @@ const scripts_length=scripts.length;
 async function cb(){
   let cbs = document.querySelectorAll('[src*="cb="]');
   let cbs_length = cbs.length;
+  if(cbs_length>20){
   for(let i=0;i<cbs_length;i++){try{
     cbs[i].setAttribute('src',cbs['src'].replace(/cb=[0-9]+/,'?'));
   }catch(e){continue;}}
+  }
 
   cbs = document.querySelectorAll('[href*="cb="]');
   cbs_length = cbs.length;
+  if(cbs_length>20){
   for(let i=0;i<cbs_length;i++){try{
     cbs[i].setAttribute('href',cbs['href'].replace(/cb=[0-9]+/,'?'));
   }catch(e){continue;}}
-  
+  }
 }
+cb();
 setTimeout(()=>window.stop(),10000)
 setInterval(cb,5000);
