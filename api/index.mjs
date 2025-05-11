@@ -5,7 +5,7 @@ async function fetchText(){
 }
 
 
-export default function handler(req,res) {
+export default async function handler(req,res) {
     const player = 'MissingLink';
   try{
     const profile =  await fetchText(`https://pokeheroes.com/userprofile?name=${player}`);
