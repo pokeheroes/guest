@@ -1,7 +1,11 @@
 
 
-async function fetchText(){
-    return await(await fetch(...arguments)).text();
+async function fetchText(url){
+    return await(await fetch(url,{
+	      headers:{
+		      "Cache-Control"-"no-cache"
+	      }
+      })).text();
 }
 
 
@@ -12,13 +16,13 @@ export default async function handler(req,res) {
     let party = (String(profile).match(/pokemon.php.id.(\d+)/g) ?? []).map(x => x.replace(/\D/g, ''));
     console.log(party);
     for(const id of party){
-      await fetchText(`https://pokeheroes.com/interact?id=${id}&action=direct&date=${new Date().getTime()}`);
+      await fetchText(`https://pokeheroes.com/interact?id=${id}&action=direct`);
     }
     const box1 = await fetchText(`https://pokeheroes.com/userboxes.php?name=${player}`);
     const box1poke = (String(box1).match(/pokemon.id.(\d+)/g) ?? []).map(x => x.replace(/\D/g, ''));
 	  console.log(box1poke);
     for(const id of box1poke){
-      await fetchText(`https://pokeheroes.com/interact?id=${id}&action=direct&date=${new Date().getTime()}`);
+      await fetchText(`https://pokeheroes.com/interact?id=${id}&action=direct`);
     }
     return res.json({
       message: `ok`,
