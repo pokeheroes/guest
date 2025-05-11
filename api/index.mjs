@@ -3,7 +3,7 @@
 async function fetchText(url){
     return await(await fetch(url,{
 	      headers:{
-		      "Cache-Control"-"no-cache"
+		      "Cache-Control":"no-cache"
 	      }
       })).text();
 }
