@@ -1,6 +1,32 @@
 
+
+async function fetchText(){
+    return await(await fetch(...arguments)).text();
+}
+
+
 export default function handler(req,res) {
-  return res.json({
-    message: `ok`,
-  })
+    const player = 'MissingLink';
+  try{
+    const profile =  await fetchText(`https://pokeheroes.com/userprofile?name=${player}`);
+    let party = (String(profile).match(/pokemon.php.id.(\d+)/g) ?? []).map(x => x.replace(/\D/g, ''));
+    console.log(party);
+    for(const id of party){
+      await fetchText(`https://pokeheroes.com/interact?id=${id}&action=direct&date=${new Date().getTime()}`);
+    }
+    const box1 = await fetchText(`https://pokeheroes.com/userboxes.php?name=${player}`);
+    const box1poke = (String(box1).match(/pokemon.id.(\d+)/g) ?? []).map(x => x.replace(/\D/g, ''));
+	  console.log(box1poke);
+    for(const id of box1poke){
+      await fetchText(`https://pokeheroes.com/interact?id=${id}&action=direct&date=${new Date().getTime()}`);
+    }
+    return res.json({
+      message: `ok`,
+    });
+  }catch(e){
+    console.log(e);
+    return res.json({
+      error:e.message,
+    });
+  }
 }
