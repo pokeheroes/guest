@@ -1,5 +1,5 @@
 
-export default function handler(VercelRequest,VercelResponse) {
+export default function handler(req,res) {
   return res.json({
     message: `ok`,
   })
