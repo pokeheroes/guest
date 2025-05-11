@@ -10,8 +10,9 @@ async function fetchText(url){
 
 
 export default async function handler(req,res) {
-    const player = 'MissingLink';
+  const player = 'MissingLink';
   try{
+    res.setHeader('Cache-Control','no-cache');
     const profile =  await fetchText(`https://pokeheroes.com/userprofile?name=${player}`);
     let party = (String(profile).match(/pokemon.php.id.(\d+)/g) ?? []).map(x => x.replace(/\D/g, ''));
     console.log(party);
